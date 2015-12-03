@@ -44,7 +44,7 @@ rm(AAChange)
 
 #Now we add some new descriptors. First, any genes that are in the dataset, but which do not have gene-level 
 #descriptors, are assigned mean values in the gene.anno table. 
-gene.anno[setdiff(d$Gene.refGene, rownames(gene.anno)),]<-c(NA, NA, NA, NA)
+gene.anno[setdiff(d$Gene.refGene[!is.na(d$Gene.refGene)], rownames(gene.anno)),]<-c(NA, NA, NA, NA)
 gene.anno<-apply(gene.anno,2,function(i) {i[is.na(i)]<-mean(i,na.rm=T)
 	return(i)})
 gene.anno<-as.data.frame(gene.anno)

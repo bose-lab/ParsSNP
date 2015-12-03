@@ -48,7 +48,7 @@ There are six files available to demonstrate ParsSNP. Each is described in turn.
 		
 		To annotate the input file:
 		
-		$perl table_annovar.pl [input-file] humandb/ -buildver hg19 -out [output-tag] -remove -protocol refGene,ljb26_all -operation g,f -nastring NA
+		$perl table_annovar.pl [input-file] humandb/ -buildver hg19 -out [output-tag] -remove -protocol refGene,ljb26_all -operation g,f -nastring NA -otherinfo
 		
 		where input-file is formatted the same as kakiuchi_nature_genetics.txt, with 5 columns including chromosome, start position, end position, reference allele, and variant allele (the Sample_ID column is optional). 
 		
