@@ -23,7 +23,7 @@ d<-d[,c("Ref","Alt","Gene.refGene","Func.refGene", "ExonicFunc.refGene","AAChang
 		"SIFT_score","Polyphen2_HDIV_score","Polyphen2_HVAR_score","LRT_score",
 		"MutationTaster_score","MutationAssessor_score","FATHMM_score",
 		"RadialSVM_score","LR_score","VEST3_score","CADD_raw","CADD_phred",
-		"GERP.._RS","phyloP46way_placental","phyloP100way_vertebrate","SiPhy_29way_logOdds")]
+		"GERP.._RS","phyloP46way_placental","phyloP100way_vertebrate","SiPhy_29way_logOdds", "Otherinfo")]
 
 #First, we replace any missing values from the exonic function column with values from the more general function column.
 d$ExonicFunc.refGene[is.na(d$ExonicFunc.refGene)]<-d$Func.refGene[is.na(d$ExonicFunc.refGene)]
