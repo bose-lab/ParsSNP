@@ -20,9 +20,6 @@ flush.console()
 #First, we replace any missing values from the exonic function column with values from the more general function column.
 d$ExonicFunc.refGene[is.na(d$ExonicFunc.refGene)]<-d$Func.refGene[is.na(d$ExonicFunc.refGene)]
 
-#Then we remove anything that is clearly not protein altering, since ParsSNP was not trained for these mutations.
-d<-d[!grepl("intergenic|intronic|unknown|upstream|downstream", d$ExonicFunc.refGene),]
-
 #In some cases, the gene and exonic function will contain two or more terms separated by a semicolon. These are removed.
 d$ExonicFunc.refGene<-gsub(";.+", "", d$ExonicFunc.refGene)
 d$Gene.refGene<-gsub("(\\w+)[,].+", "\\1", d$Gene.refGene)
