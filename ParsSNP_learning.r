@@ -108,9 +108,10 @@ expect<-function(y, indices, ...) {
 	y.out<-unlist(y.out)[order(unlist(indices))]
 
 	#There should be no non-probabilistc labels. 
-	if (min(y.out)<=0|max(y.out)>=1) {
-		y.out[y.out>=1]<-max(y.out[y.out<1])
-		y.out[y.out<=0]<-min(y.out[y.out>0])
+	if (min(y.out, na.rm=T)<=0|max(y.out, na.rm=T)>=1|sum(is.na(y.out))!=0) {
+		y.out[y.out>=1]<-max(y.out[y.out<1], na.rm=T)
+		y.out[y.out<=0]<-min(y.out[y.out>0], na.rm=T)
+		y.out[is.na(y.out)]<-mean(y.out, na.rm=T)
 		print("E-step has introduced non-probabilistic values. Vector has been coerced.")
 		}
 	return(y.out)
@@ -162,12 +163,12 @@ maximize<-function(x, y, folds) {
 
 
 	#There should be no non-probabilistc labels. 
-	if (min(y.out)<=0|max(y.out)>=1) {
-		y.out[y.out>=1]<-max(y.out[y.out<1])
-		y.out[y.out<=0]<-min(y.out[y.out>0])
+	if (min(y.out, na.rm=T)<=0|max(y.out, na.rm=T)>=1|sum(is.na(y.out))!=0) {
+		y.out[y.out>=1]<-max(y.out[y.out<1], na.rm=T)
+		y.out[y.out<=0]<-min(y.out[y.out>0], na.rm=T)
+		y.out[is.na(y.out)]<-mean(y.out, na.rm=T)
 		print("M-step has introduced non-probabilistic values. Vector has been coerced.")
 		}
-	
 	return(y.out)
 
 	}
@@ -267,4 +268,4 @@ param<-tune(nnet,descriptors,label,ranges=list(size=round(ncol(descriptors)*c(0.
 
 new.model<-nnet(descriptors,label,size=param$size,decay=param$decay,trace=T)
 
-plot(new.model$fitted.values, ParsSNP$fitted.values, xlab="New Model Predictions", ylab="ParsSNP Predictions", main="Reproducing ParsSNP Model", pch=20, cex=0.3)
+plot(new.model$fitted.values, as.vector(predict(ParsSNP, descriptors)), xlab="New Model Predictions", ylab="ParsSNP Predictions", main="Reproducing ParsSNP Model", pch=20, cex=0.3)
