@@ -68,3 +68,7 @@ There are six files available to demonstrate ParsSNP. Each is described in turn.
 
 	This workspace contains the object Hypermutators. This is a dataframe that encompasses the hypermutator set that was set aside at the outset of the study. It is formatted identically to PanCan, the dataframe that covers training and test sets in the ParsSNP_resources.Rdata workspace.
 	
+7) Secondary_Datasets.Rdata
+		
+	This workspace contains data related to the dbSNP-driver, P53 and Functional-Neutral (Kim et al) classification tasks. It contains basic summaries of all mutations as well as the ParsSNP descriptors and scores used in the study. 
+	
