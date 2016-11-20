@@ -49,6 +49,7 @@ d$VarClassT<-c(0,1)[1+(d$ExonicFunc.refGene %in% c("frameshift deletion", "frame
 #First, the amino acid positions are further parsed out. 
 aa<-gsub("(\\D+)(\\d+)(\\D+)", "\\1 \\3 \\2", d$AAChange, perl=T)
 aa[is.na(aa)]<-"UK UK UK"
+aa[grep("unknown", d$AAChange, ignore.case=TRUE)]<-"UK UK UK"
 aa<-as.data.frame(do.call("rbind", strsplit(aa, " ")), stringsAsFactors=F)
 colnames(aa)<-c("Old_AA", "New_AA", "Peptide_Position")
 
