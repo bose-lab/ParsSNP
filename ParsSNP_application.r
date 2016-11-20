@@ -1,21 +1,28 @@
 require("nnet")
+infile<-commandArgs(trailingOnly=T)[1]
+load("ParsSNP_resources.Rdata")
+
 #This script is designed to take the output of an annovar annotation command and apply ParsSNP. 
 #The annovar command should resemble:
 
 #perl table_annovar.pl [input-file] humandb/ -buildver hg19 -out [output-tag] -remove -protocol refGene,ljb26_all -operation g,f -nastring NA
 
-
 #First the file is read.
-infile<-commandArgs(trailingOnly=T)[1]
+
+
 
 d<-read.table(infile, stringsAsFactors=F, sep="\t", header=T)
 
 
-load("ParsSNP_resources.Rdata")
-
-
 print("Input and supporting files read.")
 flush.console()
+
+#Remove lines that have unknown annotations
+# i<-grepl("UNKNOWN", d$AAChange.refGene, ignore.case=TRUE)
+# d<-d[!i,]
+# print(paste(sum(i), " lines with UNKNOWN protein annotations removed."))
+# flush.console()
+
 
 #First, we replace any missing values from the exonic function column with values from the more general function column.
 d$ExonicFunc.refGene[is.na(d$ExonicFunc.refGene)]<-d$Func.refGene[is.na(d$ExonicFunc.refGene)]
@@ -49,8 +56,9 @@ d$VarClassT<-c(0,1)[1+(d$ExonicFunc.refGene %in% c("frameshift deletion", "frame
 #First, the amino acid positions are further parsed out. 
 aa<-gsub("(\\D+)(\\d+)(\\D+)", "\\1 \\3 \\2", d$AAChange, perl=T)
 aa[is.na(aa)]<-"UK UK UK"
-aa[grep("unknown", d$AAChange, ignore.case=TRUE)]<-"UK UK UK"
-aa<-as.data.frame(do.call("rbind", strsplit(aa, " ")), stringsAsFactors=F)
+aa<-strsplit(aa, " ")
+aa[unlist(lapply(aa, length))!=3]<-list(c("UK", "UK", "UK"))
+aa<-as.data.frame(do.call("rbind", aa), stringsAsFactors=F)
 colnames(aa)<-c("Old_AA", "New_AA", "Peptide_Position")
 
 #UK stands for "unknown", as in the mutation alteration is not simply one codon into another.
